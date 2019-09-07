@@ -939,6 +939,8 @@ public class MyException extends Exception {
 
 #### 集合概述
 
+* `注意`: 集合中只能存`对象`
+
 `集合层次`
 
 ```JAVA
@@ -987,7 +989,7 @@ get(int index);  // 返回List集合中指定位置的元素
 set(int index, Object elem); // 用指定元素替换List集合中指定位置的元素。
 add(Object elem); // 在List集合的尾部添加指定的元素
 add(int index, Object element); // 在List集合的指定位置插入指定元素
-remove(int index); //移除List集合中指定位置的元素。
+Ｅ remove(int index); // 移除List集合中指定位置的元素。
 remove(Object element); // 如果List集合中存在指定元素,则从List集合中移除第一次出现的指定元素
 clear(); // 从List集合中移除所有元素。
 
@@ -1117,10 +1119,10 @@ Stack<E> stack = new Stack<E>();
 `常用方法`: 
 
 ```Java
-void push(E item)  # push an item onto the top of stack
-E pop()		  # return the top item of stack, and remove it 
-E peek()	  # return the top item of stack, without remove 
-bool empty()  # Test if stack is empty
+void push(E item)  // push an item onto the top of stack
+E pop()		  // return the top item of stack, and remove it 
+E peek()	  // return the top item of stack, without remove 
+bool empty()  // Test if stack is empty
 ```
 
 `应用实例`:
@@ -1128,6 +1130,195 @@ bool empty()  # Test if stack is empty
 > 1. leetcode 20 Valid Parentheses
 
 
+
+### 泛型
+
+#### 集合中的泛型
+
+```JAVA
+// 1
+List<String> list = new ArrayList<String>(); 
+
+// 2
+for (String item : list) {
+
+}
+
+// 3
+Iterator<String> it = list.iterator();
+while (it.hasNext()) {
+    String item = it.next();
+}
+```
+
+#### 自定义泛型类
+
+常用的占位符:习惯用大写的 T,E,K,U,V
+
+```JAVA
+class MyQueue<T> {   // 在类名后添加尖括号和参数类型占位符
+	private List<T> data;
+	public MyQueue() {
+		data = new ArrayList<T>();
+	}
+    public void enqueue(T item) {	// 参数类型使用占位符,注意和类名后面的占位符保持一致
+		data.add(item);
+    }
+    public T dequeue() {		// 返回值用占位符
+        if (data.isEmpty())
+            return null;
+        return data.remove(0);
+    }
+}
+```
+
+#### 自定义泛型接口
+
+```JAVA
+interface IQueue<T> {  // 声明泛型接口
+	public void enqueue(T item);
+    public T dequeue();
+}
+
+class MyQueue<T> implements IQueue<T> {   // 在类名后添加尖括号和参数类型占位符, 注意和接口的T要相同
+	private List<T> data;
+	public MyQueue() {
+		data = new ArrayList<T>();
+	}
+    @Override
+    public void enqueue(T item) {	// 参数类型使用占位符,注意和类名后面的占位符保持一致
+		data.add(item);
+    }
+    @Override
+    public T dequeue() {		// 返回值用占位符
+        if (data.isEmpty())
+            return null;
+        return data.remove(0);
+    }
+}
+```
+
+#### 泛型方法
+
+参数类型和返回值类型
+
+```JAVA
+// 比较大小的方法
+
+public static <T> boolean isEquals(T a, T b) {  // 返回值<T>
+	return a.equals(b);
+}
+// 限定边界
+public static <T extends Number> boolean isEquals(T a, T b) {  // 返回值<T extends Number> 限定只能是Number类型
+	return a.equals(b);
+}
+```
+
+
+
+### 文件管理和I/O流
+
+#### 文件管理
+
+File
+
+可以是文件,也可以是目录
+
+`常用方法`:
+
+```JAVA
+// 构造方法
+File(String path);  // 如果path是实际存在的路径,则该File对象表示的是目录;如果path是文件名,则该File对象表示的是文件
+File(String path, String name); // path是路径名,name是文件名。
+File(File dir, String name); // dir是路径对象,name是文件名
+
+// 获得文件名
+String getName( ); // 获得文件的名称,不包括路径。
+String getPath( ); // 获得文件的路径。
+String getAbsolutePath( ); // 获得文件的绝对路径。
+String getParent( ); // 获得文件的上一级目录名。
+// 文件属性测试
+boolean exists( ); // 测试当前File对象所表示的文件是否存在。
+boolean canWrite( ); // 测试当前文件是否可写。
+boolean canRead( ); // 测试当前文件是否可读。
+boolean isFile( ); // 测试当前文件是否是文件。
+boolean isDirectory( ); // 测试当前文件是否是目录。
+// 文件操作
+long lastModified( ) // 获得文件最近一次修改的时间。
+long length( ); //获得文件的长度,以字节为单位。
+boolean delete( ); // 删除当前文件。成功返回 true,否则返回false。
+boolean renameTo(File dest); // 将重新命名当前File对象所表示的文件。成功返回 true,否则返回false。
+// 目录操作
+boolean mkdir( ); // 创建当前File对象指定的目录。
+String[] list(); // 返回当前目录下的文件和目录,返回值是字符串数组。
+String[] list(FilenameFilter filter); // 返回当前目录下满足指定过滤器的文件和目录,参数是实现FilenameFilter接口对象,返回值是字符串数组。
+File[] listFiles(); // 返回当前目录下的文件和目录,返回值是File数组。
+File[] listFiles(FilenameFilter filter); //返回当前目录下满足指定过滤器的文件和目录,参数是实现FilenameFilter接口对象,返回值是File数组。
+File[] listFiles(FileFilter filter); // 返回当前目录下满足指定过滤器的文件和目录,参数是实现FileFilter接口对象,返回值是File数组。
+```
+
+FilenameFileter 接口
+
+```JAVA
+boolean accept(File dir, String name); // 测试指定dir目录中是否包含文件名为name的文件。
+```
+
+FileFilter 接口
+
+```JAVA
+boolean accept(File pathname); // 测试指定路径名是否应该包含在某个路径名列表中。
+```
+
+#### I/O流
+
+`I/O流层次`
+
+
+
+FileInputStream
+
+FileOutputStream
+
+FileReader
+
+FileWriter
+
+
+
+### 网络编程
+
+> * java.net
+> * 基于socket和基于URL
+> * socket: TCP, UDP
+> * URL: HTTP, HTTPS
+> * 网络基础知识: 
+> * 网络结构: 
+>   * 客户端-服务器结构(C/S),  Web服务,文件传输
+>   * 对等结构(P2P)  
+> * TCP/IP 
+>   * IP地址:  标识一台计算机, 端口标识应用(0~65535 HTTP:80, FTP:21)
+>     * IPv4: 4个8位(192.168.0.1)  ; ABCDE 5类
+>     * IPv6: 8个16位
+> * TCP Socket  
+>   * 面向连接的可靠数据传输协议, 类似于电话
+>   * ServerSocket(port), socket accept(),  socket.getInputStream(),  socket.getOutputStream()
+>   * Socket(IP, port), socket.getInputStream(), getOutputStream()  
+> * UDP
+>   * DatagramSocket, send(packet), receive(packet)
+>   * DatagramPacket(byte[] buf, int length, ip, port), getData(), getLength()
+>   * InetAddress.getByName(host)
+> * 数据交换格式
+>   * XML :star:
+>   * JSON :star::star::star:
+> * JSON
+>   * JSON对象格式: {"name" : "xqy"}
+>   * JSON数组格式: ["text", "html"]
+>   * 第三方库, JSON-java
+>     * JSONObject, object.put(), object.getString("name"), getInt(""), getJSONArray("")
+>     * JSONArray, arr.put(),  getInt(int index), getString()
+> * URL
+> * HTTP/HTTPS
+>   * 
 
 ### Java常用类
 
@@ -1275,9 +1466,7 @@ public class Test {
 		//
 		System.out.println(num1.intValue());
 	}
-
 }
-
 ```
 
 
@@ -1324,7 +1513,7 @@ public class Test {
 		BigDecimal num3 = BigDecimal.valueOf(12312);
 		BigDecimal num4 = BigDecimal.valueOf(12312.321321);
 		
-		//+-*/
+		// +,-,*,/
 		System.out.println(num1.add(num2));
 		System.out.println(num1.subtract(num2));
 		System.out.println(num1.multiply(num2));

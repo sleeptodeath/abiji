@@ -1,3 +1,46 @@
+<https://github.com/Blankj/awesome-java-leetcode>
+
+<https://github.com/zhantong/leetcode>
+
+## 1
+
+<https://github.com/Blankj/awesome-java-leetcode/blob/master/note/001/README.md>
+
+### 思路
+
+1. 递归O(n^2), 循环两次
+2. `HashMap`: 具体参考blog
+
+## 7
+
+<https://github.com/Blankj/awesome-java-leetcode/blob/master/note/007/README.md>
+
+
+
+## 9
+
+给定整数,判断是否回文
+
+
+
+回文判断条件: 正 == 反
+
+
+
+取反:
+
+r = r *10 + x % 10;
+
+x /= 10;
+
+
+
+## 13
+
+遍历,考虑后面一个
+
+
+
 #### 20 Valied Parentheses
 
 `题目描述`: 括号匹配

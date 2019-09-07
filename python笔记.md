@@ -1481,57 +1481,110 @@ main()
 
 ### 11.文件 utf-8  
 
-* 文件的类型：文本文件t，二进制文件b
-* 文件的操作
-    1. 打开，f = open('文件路径/绝对路径和相对路径', '读取方式 r/w/a/b/t/+', encoding='utf-8')
-    2. 关闭  f.close()
-    3. 读写  f.write('fdsafs')  向文件写入字符串
-             f.writelines()    将一个元素全为字符串的列表写入文件
-             f.read(size=-1)  读给定size长度的文件内容，默认为全部文件内容
-             f.readline(szie=-1)  读入改行前size个单词,默认一整行
-             f.readlines(size=-1) 读入size行，保存在列表中
+* 文件的类型：文本文件 t，二进制文件 b
 
-    4. 读文件的最佳方式，用迭代器  for line in f: 
-    5. 返回当前位置  f.tell()  返回当前的流位置
-    6. 跳转  f.seek(offset, whence=0)   whence:  0:starte ; 1 :current ;  2:end
+#### 文件操作
+1. 打开
+
+   f = open('文件路径/绝对路径和相对路径', '读取方式 r/w/a/b/t/+', encoding='utf-8')
+
+2. 关闭  
+
+   f.close()
+
+3. 读写  
+* f.write('fdsafs')  向文件写入字符串
+* f.writelines()    将一个元素全为字符串的列表写入文件
+* f.read(size=-1)  读给定size长度的文件内容，默认为全部文件内容
+* f.readline(szie=-1)  读入改行前size个单词,默认一整行
+* f.readlines(size=-1) 读入size行，保存在列表中
+4. 读文件的最简单方式，用迭代器  for line in f: 
+
+5. 使用tell()返回当前字节偏移量
+
+   f.tell()  返回当前字节偏移量
+
+6. 使用seek()改变位置
+
+   f.seek(offset, whence=0)   
+
+   whence: 0-start-os.SEEK_SET; 1-current-os.SEEK_CUR; 2-end-os.SEEK_END
+
+7. 使用with自动关闭文件
+
+`注意`:
+
 * 乱码 ： encoding='utf-8'
+* 异常处理, try-except-finally 或者采用 with
 ```PYTHON
-    #文件操作
 
-    # f = open("in.txt", "r", encoding="utf-8")
+#文件读 1： 全读
+f = open("in.txt", "r", encoding="utf-8")
+text = f.read()  
+print(text)
+f.close()	# 文件关闭
 
-    #文件读法一： 全读
-    # text = f.read()
-    #处理
-    # print(text)
-    #f.close()
+#文件读 2： 按块读
+f = open("in.txt", "r", encoding="utf-8")
+ret = ''  # 最终结果
+chunck = 100  # 块大小
+while True:
+    text = f.read(chunck)
+    if not text:  # 读到结尾
+        break
+	ret += text  # 拼接结果
+print(ret)  # 打印读写结果
+f.close()  # 文件关闭
 
-    #文件读法二： 按数量读
-    # text = f.read(2)
-    # while text != "":
-        #处理
-    #     print(text, end="")
-    #     text = f.read(2)
-    #f.close()
+#文件读法三： 逐行读
+f = open("in.txt", "r", encoding="utf-8")
+ret = ''
+while True:
+    line = f.readline()
+    if not line:
+        break
+    ret += line
+f.close()
+print(line)
 
-    #文件读法三： 逐行读
-    # for line in f:
-        #处理
-    #     print(line)   #处理
-    #     print(line)
-    # f.close()
+# 或
+for line in f:
+     ret += line
+ f.close()  # 文件关闭
 
-    # f = open("out.txt", "w", encoding = "utf-8")
+# f = open("out.txt", "w", encoding = "utf-8")
 
-    #文件写法一：
-    # text = " 滚滚长江东逝水，浪花淘尽英雄。是非成败转"
-    # f.write(text)
-    # f.close()
+#文件写法一：  直接写入
+text = " 滚滚长江东逝水，浪花淘尽英雄。是非成败转"
+f = open("in.txt", "r", encoding="utf-8")
+f.write(text)
+f.close()
 
-    #文件写法二：
-    # ls = ["what", "hello", "world", "!!!"]
-    # f.writelines(ls) #文件内容为： whathelloworld!!!  连在一起了
-    # f.close()
+# 文件写2, 将数据分块写入
+
+text = " 滚滚长江东逝水，浪花淘尽英雄。是非成败转"
+f = open("in.txt", "r", encoding="utf-8")
+size = len(text)
+chunck = 100  # 分块大写
+offset = 0
+while True:
+    if offset > size:
+        break
+    f.write(text[offset:offset+chunck])
+    offset += chunck
+
+f.close()  # 注意关闭文件
+    
+#文件写法二：
+# ls = ["what", "hello", "world", "!!!"]
+# f.writelines(ls) #文件内容为： whathelloworld!!!  连在一起了
+# f.close()
+
+
+# 使用with自动关闭
+
+with open("in.txt", "r", encoding="utf-8") as f:
+    f.write(text)
 ```
 
 ### 13 面向对象
