@@ -8,6 +8,8 @@
 >
 > Vue-router官方教程： https://router.vuejs.org/zh/
 >
+> Vuex官方教程： https://vuex.vuejs.org/zh/
+>
 > Blog:
 >
 > https://blog.csdn.net/Neuf_Soleil/article/details/88925013
@@ -314,11 +316,13 @@ export default new Router({
 
 ### 五. Vuex 与前端登录拦截器
 
-#### Step1: 引入Vuex
+#### Step1: 安装Vuex
 
 ```
 npm install vuex --save
 ```
+
+#### Step2: 引入Vuex
 
 在src目录下新建文件夹`store`, 并在store中新建`index.js`
 
@@ -344,6 +348,12 @@ export default new Vuex.Store({
 ```
 
 这里我们还用到了 `localStorage`，即本地存储，在项目打开的时候会判断本地存储中是否有 user 这个对象存在，如果存在就取出来并获得 `username` 的值，否则则把 `username` 设置为空。这样我们只要不清除缓存，登录的状态就会一直保存。
+
+#### Step3: main.js中引入vuex
+
+```
+
+```
 
 
 

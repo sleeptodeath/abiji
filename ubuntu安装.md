@@ -240,27 +240,33 @@ sudo apt-get install openssh-server
 
 #### shadowsocks 翻墙
 
-> 0. vultr 修改ipv6,
-> 1. sudo apt install python-pip shadowsocks
+> 0. vultr ubuntu18.04
+> 1. putty连接
+> 2. sudo apt update
+> 3. sudo apt install shadowsocks
+> 4. vim /etc/shadowsocks.json
 >
-> 2. vim /etc/shadowsocks.json
+> ```
+> {
+>      "server":"::",  
+>      "local_address":"127.0.0.1",
+>      "local_port":1080,
+>      "port_password":{
+>           "5555":"nmslwsnd",  
+>           "6666":"nmslwsnd",
+>           "4396":"nmslwsnd",
+>           "7777":"nmslwsnd",
+>           "8888":"nmslwsnd",
+>           "9999":"nmslwsnd"
+>      },
+>      "timeout":300,
+>      "method":"aes-256-cfb",  
+>      "fast_open":false
+> }
+> ```
 >
->    ```
->    {
->        "server":"::",   # ipv6
->        "local_address":"127.0.0.1",
->        "local_port":1080,
->        "port_password":{
->             "2008":"nmslwsnd",  #端口,密码
->             "9999":"nmslwsnd"
->        },
->        "timeout":300,
->        "method":"aes-256-cfb",  # 使用策略
->        "fast_open":false
->    }
->    ```
->
->    3. ssserver -c /etc/shadowsocks.json -d start/stop/restart
+>       3. ssserver -c /etc/shadowsocks.json -d start
+>       4. 其他：ssserver -c /etc/shadowsocks.json -d start/stop/restart
 
 
 
